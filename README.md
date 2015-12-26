@@ -7,9 +7,12 @@
   - [Usage](#usage)
 
 ## Install
+Download the min.js file or install through npm:
+```
+npm install kanjivganimate
+```
 
 ## Usage
-
 Simply wrap a KanjiVG SVG in an element with class "kanjiVG".
 ```html
 <div class="kanjiVG">
@@ -47,3 +50,5 @@ Alter the animation time for each stroke by passing time values to the init() me
 KanjivgAnimate.init('1s');
 ```
 If no time is passed, the default time (.6 seconds) will be used.
+
+KanjiVG is copyright Ulrich Apel and released under the Creative Commons Attribution-Share Aline 3.0 licence.
