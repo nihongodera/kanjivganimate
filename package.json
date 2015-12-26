@@ -1,6 +1,6 @@
 {
   "name": "kanjivganimate",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Easy animation for KanjiVG SVG files.",
   "main": "KanjivgAnimate.js",
   "scripts": {

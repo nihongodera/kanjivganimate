@@ -99,13 +99,40 @@ var KanjivgAnimate = (function () {
             var newNumber = KanjivgAnimate.numbers[count];
 
             if (newPath) {
-                length = newPath.getTotalLength();
+                var transitionEvent = whichTransitionEvent(path);
 
-                var transitionEvent = 'transitionend';
+                transitionEvent && path.addEventListener('transitionend', function() {
+                    animatePath(newPath, newNumber, pathCount, count);
+                });
 
                 transitionEvent && path.addEventListener(transitionEvent, function() {
                     animatePath(newPath, newNumber, pathCount, count);
                 });
+            }
+        }
+    };
+
+    /**
+     * Find transition event.
+     * 
+     * @param  {element} element
+     * 
+     * @return {string}
+     */
+    var whichTransitionEvent = function(element) {
+        var t;
+
+        var transitions = {
+          'transition':'webkitTransitionEnd',
+          'OTransition':'oTransitionEnd',
+          'MozTransition':'transitionend',
+          'MSTransition':'msTransitionEnd',
+          'WebkitTransition':'webkitTransitionEnd'
+        }
+
+        for (t in transitions) {
+            if( element.style[t] !== undefined ) {
+                return transitions[t];
             }
         }
     };
