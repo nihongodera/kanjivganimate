@@ -1,0 +1,24 @@
+{
+  "name": "kanjivganimate",
+  "version": "0.1.0",
+  "description": "Easy animation for KanjiVG SVG files.",
+  "main": "KanjivgAnimate.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nihongodera/kanjivganimate.git"
+  },
+  "keywords": [
+    "kanji",
+    "kanjivg",
+    "japanese"
+  ],
+  "author": "Zach Leigh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nihongodera/kanjivganimate/issues"
+  },
+  "homepage": "https://github.com/nihongodera/kanjivganimate#readme"
+}
