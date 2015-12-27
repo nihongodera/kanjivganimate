@@ -1,8 +1,8 @@
 {
   "name": "kanjivganimate",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Easy animation for KanjiVG SVG files.",
-  "main": "KanjivgAnimate.js",
+  "main": "dist/KanjivgAnimate.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
