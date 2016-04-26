@@ -3,13 +3,16 @@
 var KanjivgAnimate = (function () {
 
     function KanjivgAnimate(trigger, time) {
-        time = typeof time !== 'undefined' ? time : '.6s';
+        time = typeof time !== 'undefined' ? time : 500;
 
         this.setOnClick(trigger, time);
     }
 
     /**
      * Add onclick function to triggers.
+     *
+     * @param {element} trigger
+     * @param {int} time 
      */
     KanjivgAnimate.prototype.setOnClick = function setOnClick(trigger, time) {
         var triggers = document.querySelectorAll(trigger);
@@ -54,17 +57,17 @@ var KVGAnimator = (function () {
 
         this.numbers = svg.querySelectorAll('text');
 
-        var pathCount = this.paths.length;
+        this.pathCount = this.paths.length;
 
-        this.hideAll(pathCount);
+        this.hideAll();
 
-        var count = 0;
+        this.count = 0;
 
-        var path = this.paths[count];
+        var path = this.paths[this.count];
 
-        var number = this.numbers[count];
+        var number = this.numbers[this.count];
 
-        this.animatePath(path, number, pathCount, count);
+        this.animatePath(path, number);
     };
 
     /**
@@ -86,11 +89,9 @@ var KVGAnimator = (function () {
 
     /**
      * Hide paths and numbers before animation.
-     * 
-     * @param  {int} pathCount
      */
-    KVGAnimator.prototype.hideAll = function hideAll(pathCount) {
-        for (var i = 0; i < pathCount; i++) {
+    KVGAnimator.prototype.hideAll = function hideAll() {
+        for (var i = 0; i < this.pathCount; i++) {
             this.paths[i].style.display = 'none';
 
             if (typeof this.numbers[i] !== 'undefined') {
@@ -100,15 +101,13 @@ var KVGAnimator = (function () {
     };
 
     /**
-     * Animate single path.
+     * Prepare for animation and call animation function.
      * 
      * @param  {element} path
      * @param  {element} number
-     * @param  {int} pathCount 
-     * @param  {int} count 
      */
-    KVGAnimator.prototype.animatePath = function animatePath(path, number, pathCount, count) {
-        var length = path.getTotalLength();
+    KVGAnimator.prototype.animatePath = function animatePath(path, number) {
+        this.length = path.getTotalLength();
 
         path.style.display = 'block';
 
@@ -118,64 +117,44 @@ var KVGAnimator = (function () {
 
         path.style.transition = path.style.WebkitTransition = 'none';
 
-        path.style.strokeDasharray = length + ' ' + length;
+        path.style.strokeDasharray = this.length + ' ' + this.length;
 
-        path.style.strokeDashoffset = length;
+        path.style.strokeDashoffset = this.length;
 
         path.getBoundingClientRect();
 
-        path.style.transition = path.style.WebkitTransition = 'stroke-dashoffset ' + this.time + ' ease-in-out';
+        this.interval = this.time / this.length;
 
-        path.style.strokeDashoffset = '0';
-
-        if (count <= pathCount) {
-            count += 1;
-
-            var newPath  = this.paths[count];
-
-            var newNumber = this.numbers[count];
-
-            if (newPath) {
-                var transitionEvent = this.whichTransitionEvent(path);
-
-                var _this = this;
-
-                path.addEventListener('transitionend', function() {
-                    _this.animatePath(newPath, newNumber, pathCount, count);
-                });
-
-                transitionEvent && path.addEventListener(transitionEvent, function() {
-                    _this.animatePath(newPath, newNumber, pathCount, count);
-                });
-            }
-        }
+        this.doAnimation(path);
     };
 
     /**
-     * Find transition event.
+     * Do the animation.
      * 
-     * @param  {element} element
-     * 
-     * @return {string}
+     * @param  {path} path
      */
-    KVGAnimator.prototype.whichTransitionEvent = function whichTransitionEvent(element) {
-        var t;
+    KVGAnimator.prototype.doAnimation = function doAnimation(path) {
+            var animator = setTimeout(function () {
+                this.doAnimation(path);
+            }.bind(this, path), this.interval);
 
-        var transitions = {
-          'transition':'webkitTransitionEnd',
-          'OTransition':'oTransitionEnd',
-          'MozTransition':'transitionend',
-          'MSTransition':'msTransitionEnd',
-          'WebkitTransition':'webkitTransitionEnd'
-        };
+            path.style.strokeDashoffset = this.length;
 
-        for (t in transitions) {
-            if( element.style[t] !== undefined ) {
-                return transitions[t];
+            this.length--;
+
+            if (this.length < 0) {
+                clearInterval(animator);
+
+                this.count += 1;
+
+                if (this.count < this.pathCount) {
+                    var newPath  = this.paths[this.count];
+
+                    var newNumber = this.numbers[this.count];
+
+                    this.animatePath(newPath, newNumber);
+                }
             }
-        }
-
-        return 'transitionend';
     };
 
     return KVGAnimator;

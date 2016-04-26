@@ -21,11 +21,11 @@ Instantiate KanjivgAnimate and pass it a DOM selector.
 new KanjivgAnimate('.kanjiVG');
 ```
 
-Pass an optional time value to speed up or slow down the animation.
+Pass an optional time value (in miliseconds) to speed up or slow down the animation.
 ```
-new KanjivgAnimate('.kanjiVG', '1s');
+new KanjivgAnimate('.kanjiVG', 700);
 ```
-If no time is passed, the default time of .6 seconds (.6s) will be used.
+If no time is passed, the default time of 500 ms.
 
 Make sure the KanjiVG svg tag also has the selector.
 ```html
